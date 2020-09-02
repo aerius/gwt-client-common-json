@@ -4,7 +4,7 @@ This is a simple GWT JSON Parser wrapper library adding syntactic sugar for pars
 
 ## Installation
 
-Add the maven dependency to your pom's `<depencencies>` section::
+Add the maven dependency to your pom's `<depencencies>` section:
 
 ```xml
     <dependency>
@@ -26,7 +26,7 @@ Given the following simple JSON String:
 
 ```JSON
 {
-  foo: "bar"
+  "foo": "bar"
 }
 ```
 
