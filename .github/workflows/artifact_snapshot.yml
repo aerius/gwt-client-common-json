@@ -25,6 +25,7 @@ jobs:
     - name: Upload artifact to Action
       uses: actions/upload-artifact@v2
       with:
+        name: gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
         path: target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
 #    - name: Nexus Repository Publisher for GitHub Actions
 #      uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
