@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.nexus_username }}
         password: ${{ secrets.nexus_password }}
         format: maven2
-        repository: maven-releases
+        repository: maven-snapshots
         coordinates: groupId=nl.aerius artifactId=gwt-client-common-json version=${{ env.ARTIFACT_VERSION }}
         assets: extension=jar
         filename: ./target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
