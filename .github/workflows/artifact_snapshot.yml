@@ -27,14 +27,14 @@ jobs:
       with:
         name: gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
         path: target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
-#    - name: Nexus Repository Publisher for GitHub Actions
-#      uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
-#      with:
-#        serverUrl: https://nexus.aerius.nl
-#        username: ${{ secrets.nexus_username }}
-#        password: ${{ secrets.nexus_password }}
-#        format: maven2
-#        repository: maven-releases
-#        coordinates: groupId=nl.aerius artifactId=gwt-client-common-json version=${{ env.ARTIFACT_VERSION }}
-#        assets: extension=jar
-#        filename: ./target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
+    - name: Nexus Repository Publisher for GitHub Actions
+      uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
+      with:
+        serverUrl: https://nexus.aerius.nl
+        username: ${{ secrets.nexus_username }}
+        password: ${{ secrets.nexus_password }}
+        format: maven2
+        repository: maven-releases
+        coordinates: groupId=nl.aerius artifactId=gwt-client-common-json version=${{ env.ARTIFACT_VERSION }}
+        assets: extension=jar
+        filename: ./target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
