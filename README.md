@@ -149,4 +149,4 @@ A `User` may be retrieved and created on the client as follows:
 
 An AutoValue processor library exists to automatically generate JSON Parsers such as the one described above based on an `@AutoValue` object type.
 
-This processing library and instructions to use it is available at `http://github.com/aerius/autovalue-processors`.
+This processing library and instructions to use it is available at http://github.com/aerius/autovalue-processors
