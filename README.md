@@ -66,9 +66,9 @@ Or for a complex array:
 ```json
 {
   "list": [
-            { "value", "foo" },
-            { "value", "bar" },
-            { "value", "baz" }
+            { "value": "foo" },
+            { "value": "bar" },
+            { "value": "baz" }
           ]
 }
 
@@ -77,7 +77,7 @@ Or for a complex array:
 The `value` for each respective item can be retrieved as follows:
 
 ```java
-String json = "{\"list\": [{ \"value\", \"foo\" },{ \"value\", \"bar\" },{ \"value\", \"baz\" }]}";
+String json = "{\"list\": [{ \"value\": \"foo\" },{ \"value\": \"bar\" },{ \"value\": \"baz\" }]}";
 JSONObjectHandle handle = JSONObjectHandle.fromText(json);
 
 // Fetch the 'value' field for each object
