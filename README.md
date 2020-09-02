@@ -35,8 +35,52 @@ The bar value can be retrieved as follows:
 ```java
 // Define the above JSON String
 String json = "{\"foo\":\"bar\"}";
-
 JSONObjectHandle handle = JSONObjectHandle.from(json);
 
+// Retrieve the 'foo' field
 String foo = handle.getString("foo");
+```
+
+Fetching array data is similarly made simple, given:
+
+```json
+{
+  "list": ["foo", "bar", "baz"]
+}
+```
+
+The list values can be iterated over:
+
+```java
+String json = "{\"list\":[\"foo\",\"bar\",\"baz\"]}";
+JSONObjectHandle handle = JSONObjectHandle.fromText(json);
+
+// Iterate over array values
+handle.getArray("list")
+  .forEachString(GWT::log);
+```
+
+Or for a complex array:
+
+
+```json
+{
+  "list": [
+            { "value", "foo" },
+            { "value", "bar" },
+            { "value", "baz" }
+          ]
+}
+
+```
+
+The `value` for each respective item can be retrieved as follows:
+
+```java
+String json = "{\"list\": [{ \"value\", \"foo\" },{ \"value\", \"bar\" },{ \"value\", \"baz\" }]}";
+JSONObjectHandle handle = JSONObjectHandle.fromText(json);
+
+// Fetch the 'value' field for each object
+handle.getArray("list")
+  .forEach(obj -> GWT.log(obj.getString("value")));
 ```
