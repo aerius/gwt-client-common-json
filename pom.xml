@@ -9,6 +9,17 @@
   <description>GWT Client Common JSON code</description>
 
   <packaging>gwt-lib</packaging>
+
+  <distributionManagement>
+    <repository>
+      <id>aerius-releases</id>
+      <url>https://nexus.aerius.nl/repository/maven-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>aerius-snapshots</id>
+      <url>https://nexus.aerius.nl/repository/maven-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
   
   <properties>
     <java.version>8</java.version>
@@ -69,4 +80,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

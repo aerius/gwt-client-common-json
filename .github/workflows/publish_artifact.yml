@@ -1,4 +1,4 @@
-name: Publish snapshot of artifact
+name: Publish artifact
 
 # Publish on a push
 on:
@@ -20,21 +20,13 @@ jobs:
       run: mvn package
     - name: Find artifact version
       run: echo "::set-env name=ARTIFACT_VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)"
-    - name: Echo artifact version
-      run: echo 'Artifact version  '"${{ env.ARTIFACT_VERSION }}"
     - name: Upload artifact to Action
       uses: actions/upload-artifact@v2
       with:
         name: gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
         path: target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
-    - name: Nexus Repository Publisher for GitHub Actions
-      uses: sonatype-nexus-community/nexus-repo-github-action@1.0.0
+    - name: Publish Artifact
+      uses: samuelmeuli/action-maven-publish@v1
       with:
-        serverUrl: https://nexus.aerius.nl
-        username: ${{ secrets.nexus_username }}
-        password: ${{ secrets.nexus_password }}
-        format: maven2
-        repository: maven-snapshots
-        coordinates: groupId=nl.aerius artifactId=gwt-client-common-json version=${{ env.ARTIFACT_VERSION }}
-        assets: extension=jar
-        filename: ./target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
+        nexus_username: ${{ secrets.nexus_username }}
+        nexus_password: ${{ secrets.nexus_password }}
