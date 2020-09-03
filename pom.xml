@@ -12,11 +12,11 @@
 
   <distributionManagement>
     <repository>
-      <id>aerius-releases</id>
+      <id>aerius-nexus</id>
       <url>https://nexus.aerius.nl/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>aerius-snapshots</id>
+      <id>aerius-nexus</id>
       <url>https://nexus.aerius.nl/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
