@@ -18,13 +18,6 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn package
-    - name: Find artifact version
-      run: echo "::set-env name=ARTIFACT_VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)"
-    - name: Upload artifact to Action
-      uses: actions/upload-artifact@v2
-      with:
-        name: gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
-        path: target/gwt-client-common-json-${{ env.ARTIFACT_VERSION }}.jar
     - name: Publish Artifact
       uses: samuelmeuli/action-maven-publish@v1
       with:
