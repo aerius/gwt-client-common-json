@@ -28,6 +28,6 @@ jobs:
     - name: Publish Artifact
       uses: samuelmeuli/action-maven-publish@v1
       with:
-        server_id: aerius_nexus
+        server_id: aerius-nexus
         nexus_username: ${{ secrets.nexus_username }}
         nexus_password: ${{ secrets.nexus_password }}
