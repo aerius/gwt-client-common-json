@@ -111,15 +111,15 @@ public class RequestUtil {
       throw new RuntimeException("Template args are of incorrect size: " + args.length);
     }
 
-    final TemplatedString bldr = new TemplatedString(host + template);
+    String bldr = host + template;
     for (int i = 0; i < args.length; i += 2) {
       if (args[i] == null || args[i + 1] == null) {
         continue;
       }
 
-      bldr.replace(args[i], args[i + 1]);
+      bldr = bldr.replaceAll(args[i], args[i + 1]);
     }
 
-    return bldr.toString();
+    return bldr;
   }
 }
