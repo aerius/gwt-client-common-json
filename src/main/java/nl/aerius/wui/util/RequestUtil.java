@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.util;
+package nl.aerius.wui.util;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import elemental2.dom.FormData;
 import elemental2.dom.XMLHttpRequest;
 
-import nl.overheid.aerius.wui.service.exception.RequestClientException;
+import nl.aerius.wui.service.exception.RequestClientException;
 
 public class RequestUtil {
   /** GET **/

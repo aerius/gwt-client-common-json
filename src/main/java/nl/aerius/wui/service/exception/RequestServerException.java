@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.service.exception;
+package nl.aerius.wui.service.exception;
 
 import com.google.gwt.http.client.RequestException;
 

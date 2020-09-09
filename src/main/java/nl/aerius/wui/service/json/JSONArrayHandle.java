@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.service.json;
+package nl.aerius.wui.service.json;
 
 import java.util.Optional;
 import java.util.function.Consumer;

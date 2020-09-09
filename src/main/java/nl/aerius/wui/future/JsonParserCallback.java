@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.future;
+package nl.aerius.wui.future;
 
 import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.user.client.rpc.AsyncCallback;

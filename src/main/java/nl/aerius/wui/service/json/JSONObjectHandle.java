@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.service.json;
+package nl.aerius.wui.service.json;
 
 import java.util.ArrayList;
 import java.util.List;

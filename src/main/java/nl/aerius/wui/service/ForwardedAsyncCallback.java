@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.service;
+package nl.aerius.wui.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

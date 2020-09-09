@@ -1,6 +1,6 @@
-package nl.overheid.aerius.wui.future;
+package nl.aerius.wui.future;
 
-import nl.overheid.aerius.wui.service.BaseRequestCallback;
+import nl.aerius.wui.service.BaseRequestCallback;
 
 public abstract class SimpleDebuggableRequest extends BaseRequestCallback implements DebuggableRequest {
   protected String origin;

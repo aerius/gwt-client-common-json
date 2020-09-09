@@ -1,4 +1,4 @@
-package nl.overheid.aerius.wui.future;
+package nl.aerius.wui.future;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;

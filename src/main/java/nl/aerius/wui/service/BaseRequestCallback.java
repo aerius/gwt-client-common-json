@@ -1,12 +1,12 @@
-package nl.overheid.aerius.wui.service;
+package nl.aerius.wui.service;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 
-import nl.overheid.aerius.wui.service.exception.RequestBlockedException;
-import nl.overheid.aerius.wui.service.exception.RequestClientException;
-import nl.overheid.aerius.wui.service.exception.RequestServerException;
+import nl.aerius.wui.service.exception.RequestBlockedException;
+import nl.aerius.wui.service.exception.RequestClientException;
+import nl.aerius.wui.service.exception.RequestServerException;
 
 public abstract class BaseRequestCallback implements RequestCallback {
   public boolean validateResponse(final Request request, final Response response) {
