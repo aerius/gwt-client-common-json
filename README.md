@@ -17,7 +17,7 @@ Add the maven dependency to your pom's `<depencencies>` section:
 Add the following line to your GWT Module:
 
 ```xml
-  <inherits name='nl.overheid.aerius.Json' />
+  <inherits name='nl.aerius.Json' />
 ```
 
 ## Usage
