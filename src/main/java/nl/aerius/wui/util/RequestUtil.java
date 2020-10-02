@@ -106,6 +106,12 @@ public class RequestUtil {
     return bldr.toString();
   }
 
+  public static FormData createFormData(final Map<String, String> map) {
+    final FormData data = new FormData();
+    map.forEach((k, v) -> data.append(k, v));
+    return data;
+  }
+
   public static String prepareUrl(final String host, final String template, final String... args) {
     if (args.length % 2 != 0) {
       throw new RuntimeException("Template args are of incorrect size: " + args.length);
