@@ -81,7 +81,11 @@ public class RequestUtil {
     });
     req.addEventListener("load", evt -> {
       if (req.status != 200) {
-        handleError(callback, req.responseText);
+        if (req.responseText == null || req.responseText.isEmpty()) {
+          handleError(callback, req.status + " > " + req.statusText);
+        } else {
+          handleError(callback, req.responseText);
+        }
       } else {
         callback.onSuccess(req.responseText);
       }
