@@ -5,7 +5,10 @@ import java.util.function.Function;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import jsinterop.base.Js;
+
 import elemental2.dom.FormData;
+import elemental2.dom.ProgressEvent;
 import elemental2.dom.XMLHttpRequest;
 
 import nl.aerius.wui.service.exception.RequestClientException;
@@ -74,7 +77,7 @@ public class RequestUtil {
     final XMLHttpRequest req = new XMLHttpRequest();
 
     req.addEventListener("error", evt -> {
-      handleError(callback, req.responseText);
+      handleError(callback, "XHR Error: " + evt.type + " (loaded:" + ((ProgressEvent) Js.uncheckedCast(evt)).loaded + ")");
     });
     req.addEventListener("load", evt -> {
       if (req.status != 200) {
