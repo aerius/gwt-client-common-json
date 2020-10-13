@@ -16,7 +16,15 @@ public abstract class ForwardedAsyncCallback<F, C> implements AsyncCallback<C> {
 
   @Override
   public void onSuccess(final C result) {
-    callback.onSuccess(convert(result));
+    F res = null;
+
+    try {
+      res = convert(result);
+    } catch (final Exception e) {
+      onFailure(e);
+    }
+
+    callback.onSuccess(res);
   }
 
   public abstract F convert(C content);
