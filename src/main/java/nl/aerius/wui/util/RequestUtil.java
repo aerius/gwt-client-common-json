@@ -36,7 +36,7 @@ public class RequestUtil {
   /** POST **/
 
   public static <T> void doPost(final String url, final Function<AsyncCallback<T>, AsyncCallback<String>> parser, final AsyncCallback<T> callback) {
-    doPost(url, null, parser, callback);
+    doPost(url, (FormData) null, parser, callback);
   }
 
   public static void doPost(final String url, final AsyncCallback<String> callback) {
@@ -46,6 +46,15 @@ public class RequestUtil {
   public static <T> void doPost(final String url, final FormData payload, final Function<AsyncCallback<T>, AsyncCallback<String>> parser,
       final AsyncCallback<T> callback) {
     doPost(url, payload, parser.apply(callback));
+  }
+
+  public static <T> void doPost(final String url, final String payload, final Function<AsyncCallback<T>, AsyncCallback<String>> parser,
+      final AsyncCallback<T> callback) {
+    doRequest("POST", url, payload, parser.apply(callback));
+  }
+
+  public static <T> void doPost(final String url, final String payload, final AsyncCallback<String> callback) {
+    doRequest("POST", url, payload, callback);
   }
 
   public static <T> void doPost(final String url, final FormData payload, final AsyncCallback<String> callback) {
@@ -70,10 +79,20 @@ public class RequestUtil {
   /** REQUEST **/
 
   private static void doRequest(final String method, final String url, final AsyncCallback<String> callback) {
-    doRequest(method, url, null, callback);
+    doRequest(method, url, (String) null, callback);
   }
 
   private static void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<String> callback) {
+    final XMLHttpRequest req = getRequest(method, url, callback);
+    req.send(payload);
+  }
+
+  private static void doRequest(final String method, final String url, final String payload, final AsyncCallback<String> callback) {
+    final XMLHttpRequest req = getRequest(method, url, callback);
+    req.send(payload);
+  }
+
+  private static XMLHttpRequest getRequest(final String method, final String url, final AsyncCallback<String> callback) {
     final XMLHttpRequest req = new XMLHttpRequest();
 
     req.addEventListener("error", evt -> {
@@ -92,7 +111,7 @@ public class RequestUtil {
     });
 
     req.open(method, url);
-    req.send(payload);
+    return req;
   }
 
   private static void handleError(final AsyncCallback<String> callback, final String responseText) {
