@@ -40,8 +40,8 @@ public class InteropRequestUtil {
           handleError(callback, req.responseText);
         }
       } else {
-        log(JSON.parse(req.responseText));
-        callback.onSuccess(Js.cast(JSON.parse(req.responseText)));
+        final String responseText = req.responseText;
+        callback.onSuccess(Js.cast(JSON.parse(responseText)));
       }
     });
 
