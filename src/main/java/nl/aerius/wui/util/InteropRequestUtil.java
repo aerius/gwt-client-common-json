@@ -21,6 +21,10 @@ public class InteropRequestUtil {
     doRequest("post", url, (FormData) null, callback);
   }
 
+  public static <T> void doPost(final String url, final FormData data, final AsyncCallback<T> callback) {
+    doRequest("post", url, data, callback);
+  }
+
   private static <T> void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<T> callback) {
     final XMLHttpRequest req = getRequest(method, url, callback);
     req.send(payload);
