@@ -1,6 +1,7 @@
 package nl.aerius.wui.util;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -25,18 +26,8 @@ public class InteropRequestUtil {
     doRequest("post", url, data, callback);
   }
 
-  private static <T> void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<T> callback) {
-    final XMLHttpRequest req = getRequest(method, url, callback);
-    req.send(payload);
-  }
-
-  private static <T> XMLHttpRequest getRequest(final String method, final String url, final AsyncCallback<T> callback) {
-    final XMLHttpRequest req = new XMLHttpRequest();
-
-    req.addEventListener("error", evt -> {
-      handleError(callback, "XHR Error: " + evt.type + " (loaded:" + ((ProgressEvent) Js.uncheckedCast(evt)).loaded + ")");
-    });
-    req.addEventListener("load", evt -> {
+  public static <T> void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<T> callback) {
+    final XMLHttpRequest request = getRequest(method, url, req -> {
       if (req.status != 200) {
         if (req.responseText == null || req.responseText.isEmpty()) {
           handleError(callback, req.status + " > " + req.statusText);
@@ -47,7 +38,37 @@ public class InteropRequestUtil {
         final String responseText = req.responseText;
         callback.onSuccess(Js.cast(JSON.parse(responseText)));
       }
-    });
+    }, null, callback);
+    request.send(payload);
+  }
+
+  public static <T> void doRequestCustom(final String method, final String url, final FormData payload,
+      final Consumer<XMLHttpRequest> listener) {
+    final XMLHttpRequest request = getRequest(method, url, listener, null, null);
+    request.send(payload);
+  }
+
+  public static <T> void doRequestCustom(final String method, final String url, final FormData payload,
+      final Consumer<XMLHttpRequest> listener, final Consumer<XMLHttpRequest> manipulator) {
+    final XMLHttpRequest request = getRequest(method, url, listener, manipulator, null);
+    request.send(payload);
+  }
+
+  private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener, final Consumer<XMLHttpRequest> manipulator,
+      final AsyncCallback<T> callback) {
+    final XMLHttpRequest req = new XMLHttpRequest();
+    
+    if (manipulator != null) {
+      manipulator.accept(req);
+    }
+
+    if (callback != null) {
+      req.addEventListener("error", evt -> {
+        handleError(callback, "XHR Error: " + evt.type + " (loaded:" + ((ProgressEvent) Js.uncheckedCast(evt)).loaded + ")");
+      });
+    }
+
+    req.addEventListener("load", evt -> listener.accept(req));
 
     req.open(method, url);
     return req;
