@@ -1,3 +1,19 @@
+/*
+ * Copyright the State of the Netherlands
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
 package nl.aerius.wui.util;
 
 import java.util.Map;
@@ -5,15 +21,19 @@ import java.util.function.Function;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import jsinterop.base.Js;
+import nl.aerius.wui.exception.HttpRequestException;
 
+import elemental2.dom.Blob;
+import elemental2.dom.BlobPropertyBag;
 import elemental2.dom.FormData;
-import elemental2.dom.ProgressEvent;
 import elemental2.dom.XMLHttpRequest;
 
-import nl.aerius.wui.service.exception.RequestClientException;
-
 public class RequestUtil {
+
+  private RequestUtil() {
+    // Util class
+  }
+
   /** GET **/
 
   public static <T> void doGet(final String url, final Function<AsyncCallback<T>, AsyncCallback<String>> parser, final AsyncCallback<T> callback) {
@@ -25,18 +45,18 @@ public class RequestUtil {
     doGet(url, queryString, parser.apply(callback));
   }
 
-  public static <T> void doGet(final String url, final AsyncCallback<String> callback) {
+  public static void doGet(final String url, final AsyncCallback<String> callback) {
     doGet(url, (Map<String, String>) null, callback);
   }
 
-  public static <T> void doGet(final String url, final Map<String, String> queryString, final AsyncCallback<String> callback) {
+  public static void doGet(final String url, final Map<String, String> queryString, final AsyncCallback<String> callback) {
     doRequest("GET", url + format(queryString), callback);
   }
 
   /** POST **/
 
   public static <T> void doPost(final String url, final Function<AsyncCallback<T>, AsyncCallback<String>> parser, final AsyncCallback<T> callback) {
-    doPost(url, (FormData) null, parser, callback);
+    doPost(url, null, parser, callback);
   }
 
   public static void doPost(final String url, final AsyncCallback<String> callback) {
@@ -48,82 +68,72 @@ public class RequestUtil {
     doPost(url, payload, parser.apply(callback));
   }
 
-  public static <T> void doPost(final String url, final String payload, final Function<AsyncCallback<T>, AsyncCallback<String>> parser,
-      final AsyncCallback<T> callback) {
-    doRequest("POST", url, payload, parser.apply(callback));
-  }
-
-  public static <T> void doPost(final String url, final String payload, final AsyncCallback<String> callback) {
+  public static void doPost(final String url, final FormData payload, final AsyncCallback<String> callback) {
     doRequest("POST", url, payload, callback);
   }
 
-  public static <T> void doPost(final String url, final FormData payload, final AsyncCallback<String> callback) {
+  /**
+   * Post a payload to a URL. The payload is expected to be stringified JSON.
+   */
+  public static void doPost(final String url, final String payload, final AsyncCallback<String> callback) {
     doRequest("POST", url, payload, callback);
   }
 
   /** DELETE **/
 
-  public static <T> void doDelete(final String url, final Function<AsyncCallback<T>, AsyncCallback<String>> parser, final AsyncCallback<T> callback) {
-    doDelete(url, null, parser, callback);
-  }
-
-  public static <T> void doDelete(final String url, final FormData payload, final Function<AsyncCallback<T>, AsyncCallback<String>> parser,
-      final AsyncCallback<T> callback) {
-    doDelete(url, payload, parser.apply(callback));
-  }
-
-  public static <T> void doDelete(final String url, final FormData payload, final AsyncCallback<String> callback) {
+  public static void doDelete(final String url, final AsyncCallback<String> callback) {
     doRequest("DELETE", url, callback);
   }
 
   /** REQUEST **/
 
   private static void doRequest(final String method, final String url, final AsyncCallback<String> callback) {
-    doRequest(method, url, (String) null, callback);
+    final XMLHttpRequest req = new XMLHttpRequest();
+
+    addEventListeners(req, callback);
+
+    req.open(method, url);
+    req.send();
   }
 
   private static void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<String> callback) {
-    final XMLHttpRequest req = getRequest(method, url, callback);
+    final XMLHttpRequest req = new XMLHttpRequest();
+
+    addEventListeners(req, callback);
+
+    req.open(method, url);
     req.send(payload);
   }
 
   private static void doRequest(final String method, final String url, final String payload, final AsyncCallback<String> callback) {
-    final XMLHttpRequest req = getRequest(method, url, callback);
+    final XMLHttpRequest req = new XMLHttpRequest();
+
+    addEventListeners(req, callback);
+
+    req.open(method, url);
+    req.setRequestHeader("Content-Type", "application/json");
     req.send(payload);
   }
 
-  private static XMLHttpRequest getRequest(final String method, final String url, final AsyncCallback<String> callback) {
-    final XMLHttpRequest req = new XMLHttpRequest();
-
-    req.addEventListener("error", evt -> {
-      handleError(callback, "XHR Error: " + evt.type + " (loaded:" + ((ProgressEvent) Js.uncheckedCast(evt)).loaded + ")");
-    });
+  private static void addEventListeners(final XMLHttpRequest req, final AsyncCallback<String> callback) {
+    req.addEventListener("error", evt -> handleError(callback, req.responseText));
     req.addEventListener("load", evt -> {
-      if (req.status != 200) {
-        if (req.responseText == null || req.responseText.isEmpty()) {
-          handleError(callback, req.status + " > " + req.statusText);
-        } else {
-          handleError(callback, req.responseText);
-        }
-      } else {
+      if (req.status == 200) {
         callback.onSuccess(req.responseText);
+      } else {
+        handleError(callback, req.responseText);
       }
     });
-
-    req.open(method, url);
-    return req;
   }
 
   private static void handleError(final AsyncCallback<String> callback, final String responseText) {
-    callback.onFailure(new RequestClientException(responseText));
+    callback.onFailure(new HttpRequestException(responseText));
   }
 
   private static String format(final Map<String, String> queryString) {
     final StringBuilder bldr = new StringBuilder("?");
     if (queryString != null) {
-      queryString.forEach((k, v) -> {
-        bldr.append(k + "=" + v + "&");
-      });
+      queryString.forEach((k, v) -> bldr.append(k + "=" + v + "&"));
     }
 
     // Prune the last (either a & or ?)
@@ -132,26 +142,22 @@ public class RequestUtil {
     return bldr.toString();
   }
 
-  public static FormData createFormData(final Map<String, String> map) {
-    final FormData data = new FormData();
-    map.forEach((k, v) -> data.append(k, v));
-    return data;
-  }
-
   public static String prepareUrl(final String host, final String template, final String... args) {
     if (args.length % 2 != 0) {
       throw new RuntimeException("Template args are of incorrect size: " + args.length);
     }
 
-    String bldr = host + template;
+    final TemplatedString bldr = new TemplatedString(host + template);
     for (int i = 0; i < args.length; i += 2) {
-      if (args[i] == null || args[i + 1] == null) {
-        continue;
-      }
-
-      bldr = bldr.replaceAll(args[i], args[i + 1]);
+      bldr.replace(args[i], args[i + 1]);
     }
 
-    return bldr;
+    return bldr.toString();
+  }
+
+  public static Blob createJsonBlob(final String json) {
+    final BlobPropertyBag blobPropertyBag = BlobPropertyBag.create();
+    blobPropertyBag.setType("application/json");
+    return new Blob(new Blob.ConstructorBlobPartsArrayUnionType[] { Blob.ConstructorBlobPartsArrayUnionType.of(json) }, blobPropertyBag);
   }
 }
