@@ -5,11 +5,12 @@ import java.util.function.Consumer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import jsinterop.base.Js;
-
+import elemental2.core.Global;
 import elemental2.dom.FormData;
 import elemental2.dom.ProgressEvent;
 import elemental2.dom.XMLHttpRequest;
+
+import jsinterop.base.Js;
 
 import nl.aerius.wui.service.exception.RequestClientException;
 
@@ -36,7 +37,7 @@ public class InteropRequestUtil {
         }
       } else {
         final String responseText = req.responseText;
-        callback.onSuccess(Js.cast(JSON.parse(responseText)));
+        callback.onSuccess(Js.cast(Global.JSON.parse(responseText)));
       }
     }, null, callback);
     request.send(payload);
@@ -57,7 +58,7 @@ public class InteropRequestUtil {
   private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener, final Consumer<XMLHttpRequest> manipulator,
       final AsyncCallback<T> callback) {
     final XMLHttpRequest req = new XMLHttpRequest();
-    
+
     if (manipulator != null) {
       manipulator.accept(req);
     }

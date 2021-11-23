@@ -21,12 +21,12 @@ import java.util.function.Function;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import nl.aerius.wui.exception.HttpRequestException;
-
 import elemental2.dom.Blob;
 import elemental2.dom.BlobPropertyBag;
 import elemental2.dom.FormData;
 import elemental2.dom.XMLHttpRequest;
+
+import nl.aerius.wui.exception.HttpRequestException;
 
 public class RequestUtil {
 
