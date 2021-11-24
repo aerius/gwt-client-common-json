@@ -71,8 +71,8 @@ public class InteropRequestUtil {
     request.send(payload);
   }
 
-  private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener, final Consumer<XMLHttpRequest> manipulator,
-      final AsyncCallback<T> callback) {
+  private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener,
+      final Consumer<XMLHttpRequest> manipulator, final AsyncCallback<T> callback) {
     final XMLHttpRequest req = new XMLHttpRequest();
 
     if (manipulator != null) {
@@ -92,8 +92,8 @@ public class InteropRequestUtil {
   }
 
   public static native void log(Object message) /*-{
-                                                console.info(message );
-                                                }-*/;
+    console.info(message );
+  }-*/;
 
   private static void handleError(final AsyncCallback<?> callback, final String responseText) {
     callback.onFailure(new RequestClientException(responseText));

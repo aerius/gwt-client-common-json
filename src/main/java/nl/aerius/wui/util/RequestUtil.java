@@ -158,6 +158,6 @@ public class RequestUtil {
   public static Blob createJsonBlob(final String json) {
     final BlobPropertyBag blobPropertyBag = BlobPropertyBag.create();
     blobPropertyBag.setType("application/json");
-    return new Blob(new Blob.ConstructorBlobPartsArrayUnionType[] { Blob.ConstructorBlobPartsArrayUnionType.of(json) }, blobPropertyBag);
+    return new Blob(new Blob.ConstructorBlobPartsArrayUnionType[] {Blob.ConstructorBlobPartsArrayUnionType.of(json)}, blobPropertyBag);
   }
 }
