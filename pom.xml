@@ -1,3 +1,21 @@
+<!--
+
+    Copyright the State of the Netherlands
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -11,8 +29,8 @@
   <packaging>gwt-lib</packaging>
 
   <organization>
-    <name>Ministry of Economic Affairs of The Netherlands</name>
-    <url>https://www.government.nl/ministries/ez</url>
+    <name>State of the Netherlands</name>
+    <url>https://www.government.nl</url>
   </organization>
 
   <licenses>
@@ -21,6 +39,12 @@
       <url>http://www.gnu.org/licenses/agpl-3.0.txt</url>
     </license>
   </licenses>
+
+  <scm>
+    <connection>scm:git:ssh://git@github.com/aerius/gwt-client-common-json.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/aerius/gwt-client-common-json.git</developerConnection>
+    <url>https://www.github.com/aerius/gwt-client-common-json</url>
+  </scm>
 
   <distributionManagement>
     <repository>
@@ -32,11 +56,6 @@
       <url>https://nexus.aerius.nl/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
-
-  <scm>
-    <connection>scm:git:ssh://git@github.com:aerius/gwt-client-common-json.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:aerius/gwt-client-common-json.git</developerConnection>
-  </scm>
 
   <properties>
     <java.version>8</java.version>
@@ -63,6 +82,14 @@
       <version>1.0.0-RC1</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>aerius-nexus-public</id>
+      <name>AERIUS Nexus repository</name>
+      <url>https://nexus.aerius.nl/repository/maven-public/</url>
+    </repository>
+  </repositories>
 
   <build>
     <resources>

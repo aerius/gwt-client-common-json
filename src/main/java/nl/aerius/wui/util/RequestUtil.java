@@ -21,12 +21,12 @@ import java.util.function.Function;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import nl.aerius.wui.exception.HttpRequestException;
-
 import elemental2.dom.Blob;
 import elemental2.dom.BlobPropertyBag;
 import elemental2.dom.FormData;
 import elemental2.dom.XMLHttpRequest;
+
+import nl.aerius.wui.exception.HttpRequestException;
 
 public class RequestUtil {
 
@@ -158,6 +158,6 @@ public class RequestUtil {
   public static Blob createJsonBlob(final String json) {
     final BlobPropertyBag blobPropertyBag = BlobPropertyBag.create();
     blobPropertyBag.setType("application/json");
-    return new Blob(new Blob.ConstructorBlobPartsArrayUnionType[] { Blob.ConstructorBlobPartsArrayUnionType.of(json) }, blobPropertyBag);
+    return new Blob(new Blob.ConstructorBlobPartsArrayUnionType[] {Blob.ConstructorBlobPartsArrayUnionType.of(json)}, blobPropertyBag);
   }
 }

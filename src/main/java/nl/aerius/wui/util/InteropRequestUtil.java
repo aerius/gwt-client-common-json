@@ -1,3 +1,19 @@
+/*
+ * Copyright the State of the Netherlands
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
 package nl.aerius.wui.util;
 
 import java.util.Map;
@@ -5,11 +21,12 @@ import java.util.function.Consumer;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import jsinterop.base.Js;
-
+import elemental2.core.Global;
 import elemental2.dom.FormData;
 import elemental2.dom.ProgressEvent;
 import elemental2.dom.XMLHttpRequest;
+
+import jsinterop.base.Js;
 
 import nl.aerius.wui.service.exception.RequestClientException;
 
@@ -36,7 +53,7 @@ public class InteropRequestUtil {
         }
       } else {
         final String responseText = req.responseText;
-        callback.onSuccess(Js.cast(JSON.parse(responseText)));
+        callback.onSuccess(Js.cast(Global.JSON.parse(responseText)));
       }
     }, null, callback);
     request.send(payload);
@@ -54,10 +71,10 @@ public class InteropRequestUtil {
     request.send(payload);
   }
 
-  private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener, final Consumer<XMLHttpRequest> manipulator,
-      final AsyncCallback<T> callback) {
+  private static <T> XMLHttpRequest getRequest(final String method, final String url, final Consumer<XMLHttpRequest> listener,
+      final Consumer<XMLHttpRequest> manipulator, final AsyncCallback<T> callback) {
     final XMLHttpRequest req = new XMLHttpRequest();
-    
+
     if (manipulator != null) {
       manipulator.accept(req);
     }
@@ -75,8 +92,8 @@ public class InteropRequestUtil {
   }
 
   public static native void log(Object message) /*-{
-                                                console.info(message );
-                                                }-*/;
+    console.info(message );
+  }-*/;
 
   private static void handleError(final AsyncCallback<?> callback, final String responseText) {
     callback.onFailure(new RequestClientException(responseText));
