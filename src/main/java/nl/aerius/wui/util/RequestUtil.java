@@ -16,6 +16,7 @@
  */
 package nl.aerius.wui.util;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -50,7 +51,12 @@ public class RequestUtil {
   }
 
   public static void doGet(final String url, final Map<String, String> queryString, final AsyncCallback<String> callback) {
-    doRequest("GET", url + format(queryString), callback);
+    doGet(url, queryString, Collections.emptyMap(), callback);
+  }
+
+  public static void doGet(final String url, final Map<String, String> queryString, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    doRequest("GET", url + format(queryString), additionalHeaders, callback);
   }
 
   /** POST **/
@@ -69,50 +75,69 @@ public class RequestUtil {
   }
 
   public static void doPost(final String url, final FormData payload, final AsyncCallback<String> callback) {
-    doRequest("POST", url, payload, callback);
+    doPost(url, payload, Collections.emptyMap(), callback);
+  }
+
+  public static void doPost(final String url, final FormData payload, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    doRequest("POST", url, payload, additionalHeaders, callback);
   }
 
   /**
    * Post a payload to a URL. The payload is expected to be stringified JSON.
    */
   public static void doPost(final String url, final String payload, final AsyncCallback<String> callback) {
-    doRequest("POST", url, payload, callback);
+    doPost(url, payload, Collections.emptyMap(), callback);
+  }
+
+  /**
+   * Post a payload to a URL. The payload is expected to be stringified JSON.
+   */
+  public static void doPost(final String url, final String payload, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    doRequest("POST", url, payload, additionalHeaders, callback);
   }
 
   /** DELETE **/
 
   public static void doDelete(final String url, final AsyncCallback<String> callback) {
-    doRequest("DELETE", url, callback);
+    doDelete(url, Collections.emptyMap(), callback);
+  }
+
+  public static void doDelete(final String url, final Map<String, String> additionalHeaders, final AsyncCallback<String> callback) {
+    doRequest("DELETE", url, additionalHeaders, callback);
   }
 
   /** REQUEST **/
 
-  private static void doRequest(final String method, final String url, final AsyncCallback<String> callback) {
-    final XMLHttpRequest req = new XMLHttpRequest();
-
-    addEventListeners(req, callback);
-
-    req.open(method, url);
+  private static void doRequest(final String method, final String url, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    final XMLHttpRequest req = prepareRequest(method, url, additionalHeaders, callback);
     req.send();
   }
 
-  private static void doRequest(final String method, final String url, final FormData payload, final AsyncCallback<String> callback) {
-    final XMLHttpRequest req = new XMLHttpRequest();
-
-    addEventListeners(req, callback);
-
-    req.open(method, url);
+  private static void doRequest(final String method, final String url, final FormData payload, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    final XMLHttpRequest req = prepareRequest(method, url, additionalHeaders, callback);
     req.send(payload);
   }
 
-  private static void doRequest(final String method, final String url, final String payload, final AsyncCallback<String> callback) {
+  private static void doRequest(final String method, final String url, final String payload, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
+    final XMLHttpRequest req = prepareRequest(method, url, additionalHeaders, callback);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.send(payload);
+  }
+
+  private static XMLHttpRequest prepareRequest(final String method, final String url, final Map<String, String> additionalHeaders,
+      final AsyncCallback<String> callback) {
     final XMLHttpRequest req = new XMLHttpRequest();
 
     addEventListeners(req, callback);
 
     req.open(method, url);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.send(payload);
+    additionalHeaders.forEach(req::setRequestHeader);
+    return req;
   }
 
   private static void addEventListeners(final XMLHttpRequest req, final AsyncCallback<String> callback) {
