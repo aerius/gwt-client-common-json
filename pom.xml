@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>nl.aerius</groupId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.0</version>
 
   <artifactId>gwt-client-common-json</artifactId>
   <name>GWT Client Common JSON code</name>
@@ -44,7 +44,7 @@
     <connection>scm:git:ssh://git@github.com/aerius/gwt-client-common-json.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/aerius/gwt-client-common-json.git</developerConnection>
     <url>https://www.github.com/aerius/gwt-client-common-json</url>
-    <tag>HEAD</tag>
+    <tag>1.3.0</tag>
   </scm>
 
   <distributionManagement>
