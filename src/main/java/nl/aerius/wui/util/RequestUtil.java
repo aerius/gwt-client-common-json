@@ -54,6 +54,10 @@ public class RequestUtil {
     doGet(url, queryString, Collections.emptyMap(), callback);
   }
 
+  public static void doGetWithHeaders(final String url, final Map<String, String> additionalHeaders, final AsyncCallback<String> callback) {
+    doGet(url, (Map<String, String>) null, additionalHeaders, callback);
+  }
+
   public static void doGet(final String url, final Map<String, String> queryString, final Map<String, String> additionalHeaders,
       final AsyncCallback<String> callback) {
     doRequest("GET", url + format(queryString), additionalHeaders, callback);
